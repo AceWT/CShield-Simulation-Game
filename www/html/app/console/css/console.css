@@ -1,0 +1,29 @@
+body,html{
+    background-color:black;
+    color:white;
+    font-family:"Lucida Console", Monaco, monospace;
+    font-size:14px;
+    color:lime;
+    width:100%;
+    overflow-x:hidden;
+}
+#commandinput{
+    display:inline;
+    width:auto;
+}
+#commandinput input{
+    background-color:transparent;
+    border:none;
+    color:white;
+    font-family:inherit;
+    width:60%;
+    font-size:100%
+}
+
+.command-sending{
+    color: rgba(255,255,255,.75);
+    display:none;
+}
+#console a{
+    color:inherit;
+}

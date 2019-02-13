@@ -1,0 +1,1 @@
+To test the Console system see Development Reference pages 13-16

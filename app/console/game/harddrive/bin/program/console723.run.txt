@@ -1,0 +1,4 @@
+<?php
+
+$programResponse = '<div style="color:white">Starting up</div>';
+$programResponse .= '<div style="color:red">Unable to start console... already running.</div>';

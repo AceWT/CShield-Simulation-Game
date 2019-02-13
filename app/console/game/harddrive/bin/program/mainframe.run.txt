@@ -1,0 +1,60 @@
+<?php
+
+$response['data'][] = $Console->Line(
+    '<div style="color:white">Starting up</div>',
+    'raw',1,0
+);
+$response['data'][] = $Console->Line(
+    '<div style="color:white">Starting system checkup...</div>',
+    'raw',1,0
+);
+$response['data'][] = $Console->Line(
+    '<span style="color:white">Checking dependecies... </span>',
+    'raw',2,1000
+);
+
+$response['data'][] = $Console->Line(
+    'OK<br />',
+    'raw',3,1000
+);
+
+$response['data'][] = $Console->Line(
+    '<span style="color:white">Scanning hardware... </span>',
+    'raw',4,0
+);
+
+$response['data'][] = $Console->Line(
+    'OK<br />',
+    'raw',5,1000
+);
+
+
+$response['data'][] = $Console->Line(
+    '<span style="color:white">Loading ...</span> 0% ',
+    'raw',6,0
+);
+
+for ($x = 0; $x <= 10; $x++) {
+    $fakePostotak = ($x*10)+rand(-5,5);
+    if ($x == 10)
+        $fakePostotak = 100;
+    $response['data'][] = $Console->Line(
+        abs($fakePostotak).'% ',
+        'raw',(6+$x),rand(500,1500)
+    );
+}
+$response['data'][] = $Console->Line(
+    '<div style="color:white">Starting IDE...</div>',
+    'raw',17,0
+);
+$response['data'][] = $Console->Line(
+    '',
+    'raw',18,100
+);
+if ($step == 18)
+{
+    //turn on mainfram
+    $Instance->Game->SetSetting('mainframestatus','1');
+    $response['redirect'] = '/mainframe';
+}
+//go to mainframe

@@ -1,0 +1,25 @@
+<?php
+
+/**
+* Config template
+* Copy this file to config.php and set configuration.
+*/
+define('PHP5',1);
+$config = [
+
+  //Database Settings
+	'db_db'		=> 'cshield',
+	'db_host'	=> 'localhost',
+	'db_user'	=> 'root',
+	'db_pass'	=> '',
+
+	//Session settings
+	'session_cookiename' => 'cshield',
+	'session_cookiedomain' => 'cshield.test',
+
+	//Game settings
+	'game_corptitle_short' => 'CSHIELD CORP.',
+	'game_corptitle_long' => 'CShield Corporation',
+	'game_console_version' => 'v7.23 build 2865'
+
+];

@@ -1,0 +1,1 @@
+Runs a program. run -path [path] Example: run -path bin/program/test

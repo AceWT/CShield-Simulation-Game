@@ -1,0 +1,1 @@
+Sets current instance as existing user, inheriting its permissions. instancesetuser -u [username] -p [password]

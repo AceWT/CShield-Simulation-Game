@@ -1,0 +1,20 @@
+[ S.A.I.N.T ] Generator 1 malfunction
+[ S.A.I.N.T ] Shutting down Generator 1
+[ S.A.I.N.T ] Mitigating Master system to Host 2
+[ S.A.I.N.T ] Automatic MAINFRAME restart
+[ SYSTEM ] MAINFRAME started
+[ SYSTEM ] Starting S.A.I.N.T
+[ S.A.I.N.T ] Section 3 structure breach
+[ S.A.I.N.T ] Foregin pathogen detected in ventilation system Section 3 pipe 1-4 ... sealing
+[ S.A.I.N.T ] Sealing pipe 3:1, 3:2, 3:3, 3:4 complete
+[ S.A.I.N.T ] Critical temperature (86° Celsius) detected, Section 3 Lab 6
+[ S.A.I.N.T ] Calculated 65% probability of critical failure
+[ SYSTEM ] Protocol PROT::CRITICAL:4 pending validation
+[ S.A.I.N.T ] PROT::CRITICAL:4 approved
+[ S.A.I.N.T ] Starting PROT::CRITICAL:4
+[ Broadcast:SYSTEM ] Starting PROT::CRITICAL:4
+[ S.A.I.N.T ] Facility lockdown initiated
+[ Broadcast:SYSTEM ] Lockdown Complete
+[ Broadcast:SYSTEM ] Emergency Shutdown Initiated
+[ Broadcast:SYSTEM ] Emergency Shutdown Complete
+[ S.A.I.N.T ] Shutting down MAINFRAME...

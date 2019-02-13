@@ -1,0 +1,14 @@
+There was leakage in cooling agent which triggered one of generators to catch fire.
+Fire spread to one of labs and level 2 and LS-457 went airborne!! S.A.I.N.T initiated automatic lockdown I can't override it from my station and I can't go anywhere
+since bridge control guys aren't responding--
+
+I turned off firewall to remote Console, hopefully you can restart MAINFRAME after purge period just in case I won't be able to.. If you at Base are reading this here is current
+system status:
+
+MAINFRAME - shut itself off
+SAINT - off
+Sections 1-17 down - no power
+We are on backup generators only
+
+- tech Jason at lvl5 (ID578)
+END
