@@ -5,6 +5,12 @@ function az09($str)
 	return preg_replace("/[^a-zA-Z0-9]+/", "", $str);
 }
 
+function redirect($url, $permanent = false)
+{
+    header('Location: ' . $url, true, $permanent ? 301 : 302);
+    exit();
+}
+
 /**
  * toCommandText()
  * Console command text sanitize.
@@ -84,15 +90,15 @@ function toDecimal($num)
     $commaPos = strrpos($num, ',');
     $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
         ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
-  
+
     if (!$sep) {
         return floatval(preg_replace("/[^0-9-]/", "", $num));
     }
 
-    return 
+    return
         preg_replace("/[^0-9-]/", "", substr($num, 0, $sep)) . '.' .
         preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)));
-    
+
 }
 function slugify($text, $replacement = '_')
 {
@@ -103,7 +109,7 @@ function slugify($text, $replacement = '_')
 }
 /**
  * isWebsiteOwner()
- * 
+ *
  * @return bool
  * @description If is logged in admin of this website then return true.
  */
@@ -115,7 +121,7 @@ function isWebsiteOwner()
 
 /**
  * isLoggedIn()
- * 
+ *
  * @return bool
  * @description If is logged (not used yet)
  */
@@ -140,7 +146,7 @@ function isAdmin($userid = false)
 }
 /**
  * credit()
- * 
+ *
  * @return credit link crowebs
  */
 function credit()
@@ -149,7 +155,7 @@ function credit()
     return '<span class="copyright"><span class="ca">Copyright &copy; '.date('Y').' '.$web->website_profile['title'].'<span> <span class="cb">'.t('Web izrada').': <a target="_blank" href="http://www.'.$config['main_domain'].'/">'.$config['company_name'].'</a></span></span>';
 }
 /**
- * Javascript varijabla koja je postavljena u headeru a povlaci je nicedit kad treba dodati 
+ * Javascript varijabla koja je postavljena u headeru a povlaci je nicedit kad treba dodati
  * link na text tab - pages (za dropdown meni)
  * TODO: KESIRATI! ovo se svaki page load ucitava
  */
@@ -158,14 +164,14 @@ function AxeJS_AxePages()
     global $web,$db;
     $path = PATHROOT."html/pages/";
     $ret = '"/":"Naslovna",';
-    
+
     $fixedPages = list_fixed_pages(true);
     foreach($fixedPages as $pagefilename => $pagename)
     {
-        $djelovi = explode("_",substr($pagefilename,6)); 
-        
-        
-        
+        $djelovi = explode("_",substr($pagefilename,6));
+
+
+
         if ($pagefilename != 'fixed_index')//skip naslovna
         {
             $ret .= "\"";$ime = "";
@@ -173,12 +179,12 @@ function AxeJS_AxePages()
             {
                  $ret .= "/".$d;
                  if ($d != 'index')
-                 $ime .= ucfirst($d)." &#10097; "; 
+                 $ime .= ucfirst($d)." &#10097; ";
             }
             $ret .= ".html\": \"".substr(trim($ime),0,-9)."\",";
-        }        
-        
-    
+        }
+
+
     }
     //get custom pages
     $custompages = list_custom_pages();
@@ -187,7 +193,7 @@ function AxeJS_AxePages()
         //$index = PageSubpageToFixedFilename($cp['page'],$cp['subpage']);
         $ret .= '"/'.$cp['page'].'/'.$cp['subpage'].'.htm":"['.$cp['Naziv'].']",';
     }
-    
+
     return "{".$ret."}";
 }
 function CreateCurrentUrl($page,$subpage,$isCustom)
@@ -228,7 +234,7 @@ function isValidEmail($email)
 //lists only public pages, dont list private pages like ucp links etc. defined in config.php
 /**
  * list_fixed_pages()
- * 
+ *
  * @param bool blocksystempages
  * @return array of fixed pages <filename> => <page name from config>
  * @example array('fixed_index' => 'Naslovna stranica', ...) ili array('fixed_onama_kontakt' => 'O nama - Kontakt', ...)
@@ -245,11 +251,11 @@ function list_fixed_pages($blocksystempages = false,$blockDevPages = true)
         {
             //remove .php
             $filename = substr($file, 0, -4); // remove .php
-            
+
             $options = FixedPageOptions($filename);
-            
-            
-            if (!isset($config['pages_names'][$filename])) 
+
+
+            if (!isset($config['pages_names'][$filename]))
                 $error->Report("Missing pages_names for '".$file."' in config");
             else if ($config['pages_names'][$filename][1] == 0 && $blocksystempages)
             {
@@ -269,7 +275,7 @@ function list_fixed_pages($blocksystempages = false,$blockDevPages = true)
                                             'isDev' => ($config['pages_names'][$filename][2] == 0)
                                             );
             }
-                
+
         }
     }
     return $ra;
@@ -278,7 +284,7 @@ function list_fixed_pages($blocksystempages = false,$blockDevPages = true)
 function list_custom_pages($blockinactivepages = false)
 {
     global $db,$web;
-    
+
     if ($blockinactivepages)
         $where = array(
                 "accountID" => $web->userid,
@@ -288,7 +294,7 @@ function list_custom_pages($blockinactivepages = false)
         $where = array(
                 "accountID" => $web->userid
             );
-    
+
     $custompages = $db->select("website_pages",array('id','Naziv','page','subpage'),array(
             "AND" => $where,
             "ORDER" => array('Naziv' => 'ASC')
@@ -303,7 +309,7 @@ function getCustomPageNaziv($page,$subpage)
 	$cachename = 'getCustomPageNaziv_'.md5($web->userid.$page.$subpage);
 	$naziv = phpFastCache::get($cachename);
     if ($naziv == null) {
-	
+
 		global $web,$db;
 		$getCustomPage = $db->query("CALL GetCustomPage(".$web->userid.",'".$page."','".$subpage."');")->fetchAll();
 		if ( count($getCustomPage) == 1 )
@@ -328,7 +334,7 @@ function getCustomPageNaziv($page,$subpage)
 
 /**
  * PageSubpageToURL()
- * 
+ *
  * @param mixed $page
  * @param mixed $subpage
  * @return string - generated relative url of this combination
@@ -338,9 +344,9 @@ function PageSubpageToURL($page,$subpage,$isCustom)
 {
     $suffix = ($isCustom) ? '.htm' : '.html';
     if ($page == '') return false;
-    
+
     if ($page == 'index') return '/';
-    
+
     $sp = ($subpage == '') ? '/index'.$suffix : '/'.$subpage.$suffix;
     $url = '/'.$page.$sp;
     return $url;
@@ -348,7 +354,7 @@ function PageSubpageToURL($page,$subpage,$isCustom)
 
 function PageSubpageToFixedFilename($page,$subpage,$issyspage = false)
 {
-    
+
     $page = (!$page || $page == '') ? 'index' : $page;
 
     $curr_subpageq 	= explode("-",$subpage);
@@ -359,7 +365,7 @@ function PageSubpageToFixedFilename($page,$subpage,$issyspage = false)
 function FixedFilenameToPageSubpage($fixedfilename)
 {
     if ($fixedfilename == 'fixed_index') return array('index','');
-/*    
+/*
 fixed_index Početna
 fixed_onama_index O nama
 fixed_onama_kontakt O nama - Kontakt
@@ -382,7 +388,7 @@ function list_templates($template)
         $error->Report("Template folder '".$tpltemplatesdir."' does not exist");
         return;
     }
-    
+
     $files = scandir($tpltemplatesdir);
     $ra = array();
     foreach ($files as $file)
@@ -392,12 +398,12 @@ function list_templates($template)
             //remove .php
             $filename = substr($file, 0, -8); // remove .tpl.php
             array_push($ra,$filename);
-            
+
         }
-        
+
     }
     return $ra;
-} 
+}
 
 function toMysqlDate($unixTimestamp) {
     return date("Y-m-d H:i:s", $unixTimestamp);
@@ -411,7 +417,7 @@ function mysqlDateTimeToUnix($mysqldatetime)
 }
 /**
  * dateToHumanReadable()
- * 
+ *
  * @param mixed $variousDateFormat
  * @param string $formatMode - full (date+time), date (date only), time (time only)
  * @return string localized formatted date
@@ -430,7 +436,7 @@ function dateToHumanReadable($variousDateFormat, $formatMode = 'full')
         $error->Report('Global function dateToHumanReadable() called before $contentTranslation was initilazed!');
         return $date->format('d. m. Y. H:i');
     }
-    
+
     if ($formatMode == 'date')
         return $date->format($contentTranslation->current_localeData['phpdate_format_date']);
     elseif($formatMode == 'time')
@@ -441,7 +447,7 @@ function dateToHumanReadable($variousDateFormat, $formatMode = 'full')
 
 /**
  * secondsToTime()
- * 
+ *
  * @param mixed $seconds
  * @param string $formatMode - long ( dana sati minuta sekundi), short (dana sati minuta), tiny (dana sati), day (dana)
  * @return
@@ -449,7 +455,7 @@ function dateToHumanReadable($variousDateFormat, $formatMode = 'full')
 function secondsToTime($seconds,$formatMode = 'long') {
     $dtF = new DateTime("@0");
     $dtT = new DateTime("@$seconds");
-    switch ($formatMode) 
+    switch ($formatMode)
     {
         case 'day':
         return $dtF->diff($dtT)->format('%a '.t('dana'));
@@ -466,7 +472,7 @@ function secondsToTime($seconds,$formatMode = 'long') {
         return $dtF->diff($dtT)->format('%a '.t('dana').', %h '.t('sati').', %i '.t('minuta').' and %s '.t('sekundi').'');
         break;
     }
-    
+
 }
 
 /**
@@ -513,7 +519,7 @@ function FilterGETSubpageParametars($subpage)
     {
         if ($k == 0)
             continue;
-            
+
         $e2 = explode("_",$v);
         if (isset($e2[1]))
         {
@@ -522,11 +528,11 @@ function FilterGETSubpageParametars($subpage)
                 $key = $e2[0];
                 array_shift($e2);
                 $e3 = implode("_",$e2);
-                $p[$key] = $e3;  
+                $p[$key] = $e3;
             }
             else
-                $p[$e2[0]] = $e2[1];  
-           
+                $p[$e2[0]] = $e2[1];
+
         }
         else
             array_push($p,$v);
@@ -535,7 +541,7 @@ function FilterGETSubpageParametars($subpage)
 }
 /**
  * FilterGETIsCustom()
- * 
+ *
  * @param mixed $axevarcustom
  * @return bool
  * @description If custom parametar is sent from htaccess then returns true
@@ -594,7 +600,7 @@ function textsummary($str, $n = 500, $end_char = '&#8230;')
         {
             $out = trim($out);
             break;
-            
+
         }
     }
     //var_dump(trim($out));
@@ -666,7 +672,7 @@ function PageCPHTMLHeader($title = false,$icon = 'cog', $linktitle = '', $append
     $rand = rand(1,9999999);
     $title = (!$title) ? t('Postavke') : $title;
     $linktitle = ($linktitle == '') ? $linktitle : ' '.$linktitle;
-    
+
     echo '<div class="pagecontrolpanelgear">
         <a href="#" onclick="javascript:$(\'#mpagecontrolpanel'.$rand.'\').modal();return false;" title="'.$title.'"><span class="cm-menu fa fa-'.$icon.'"></span>'.$linktitle.'</a>
         '.$appendHTML.'
@@ -676,7 +682,7 @@ function PageCPHTMLHeader($title = false,$icon = 'cog', $linktitle = '', $append
   <div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <h4 class="modal-title">'.$title.'</h4></div>
   <div class="modal-body" id="pagecontrolpanel'.$rand.'">';
-    
+
     //echo '<div class="pagecontrolpanelgear"><a href="#" onclick="javascript:$(\'#pagecontrolpanel'.$rand.'\').dialog({width:\'auto\',resizable: false,modal:true});return false;"><span class="cm-menu fa fa-cog"></span>'.$linktitle.'</a></div>
     //<div id="pagecontrolpanel'.$rand.'" style="display:none" title="'.$title.'">';
 }
@@ -712,21 +718,21 @@ function IsSubdomainTaken($subdomain)
     global $config,$db;
     $subdomain = toSafeString($subdomain);
     if (in_array($subdomain,$config['restrictedSubdomains'])) return true;
-    
+
     $registered = $db->has("website_profile",array("subdomain[=]"=>$subdomain));
-    //echo $db->last_query(); 
-    //exit; 
+    //echo $db->last_query();
+    //exit;
     return ($registered) ? true : false;
 }
 /**
  * TemplateHTMLPreview()
- * 
+ *
  * @param mixed $tplarray - from TemplateInfo($templatedir)
  * @return html
  */
 function TemplateHTMLPreview($templateDir)
 {
-	
+
     /*
     Array
     (
@@ -736,9 +742,9 @@ function TemplateHTMLPreview($templateDir)
             (
                 [0] =&gt; Dizajn
                 [1] =&gt; Portfolio
-                [2] =&gt; 
+                [2] =&gt;
             )
-    
+
         [ispublic] =&gt; 1
         [thumburl] =&gt; /html/demoresources/tpl.jpg
     )
@@ -753,7 +759,7 @@ function TemplateHTMLPreview($templateDir)
     <span class="templatepreview-card-image__filename"><a href="/templates/index-prikazi_'.$templateDir.'.phtml">'.$a['naziv'].'</a></span>
   </div>
 </div>';
-    
+
     return $r;
 }
 function getUserWebsiteUrl($nullreplacement='-')
@@ -787,7 +793,7 @@ function getRepeaterImageFieldSizes($repeaterfilename = false, $isGeneral = NULL
         die('isGeneral not defined in getRepeaterImageFieldSizes() function.');
     if ($isGeneral == 1) $isGeneral = true;
     elseif($isGeneral == 0) $isGeneral = false;
-    
+
     //print_r($web->website_profile['template']);
     $repeaterfilepath = PATHROOT.'html/tpl/'.$web->website_profile['template'].'/repeaters/'.$repeaterfilename.'.php';
     if (!is_file($repeaterfilepath))
@@ -799,7 +805,7 @@ function getRepeaterImageFieldSizes($repeaterfilename = false, $isGeneral = NULL
     $repeater = new TplRepeater($repeater_unique_name,$repeaterfilename,$nid,$isGeneral); //dodano 05 03 2017
     //init other repeater data from repeater template and do not draw ($repeater_isstandalone = true)
     include($repeaterfilepath);
-    
+
     return $repeater->GetImageSizes();
     /*if (isset($repeater->imagesizes) && is_array($repeater->imagesizes))
         return $repeater->imagesizes;
@@ -851,7 +857,7 @@ function GetSysLangInfo($id)
     global $db;
     if (!is_numeric($id))
         return false;
-        
+
     $locale = phpFastCache::get('websitelocalecachefull_id'.$id);
     if ($locale == null) {
         $locale = $db->get("system_languages",array('id','phplocale','phptimezone','currency','iso','iso2'), array("id[=]"=>$id));
@@ -945,7 +951,7 @@ function phpFastCacheKeyed($cachename_keys,$cachename,$debug = false)
     else
     {
         $cache_keys = array_unique($cache_keys);
-        if ($debug) echo 'added '.$cachename.' to existing keys: '.$cachename_keys.'<br><br>';   
+        if ($debug) echo 'added '.$cachename.' to existing keys: '.$cachename_keys.'<br><br>';
     }
     if (!in_array($cachename,$cache_keys))
 	   $cache_keys[] = $cachename; //add this cache name to key collection
@@ -966,7 +972,7 @@ function CDFastCacheKeyed($folder,$cachename_keys,$cachename,$debug = false)
     else
     {
         $cache_keys = array_unique($cache_keys);
-        if ($debug) echo 'added '.$cachename.' to existing keys: '.$cachename_keys.'<br><br>';   
+        if ($debug) echo 'added '.$cachename.' to existing keys: '.$cachename_keys.'<br><br>';
     }
     if (!in_array($cachename,$cache_keys))
 	   $cache_keys[] = $cachename; //add this cache name to key collection
@@ -1074,7 +1080,7 @@ function formElementTermsDropdown_helper($elements,$depth = 0)
 {
     $r = '';
     $prefix = '';
-    
+
     for ($x = 1; $x <= $depth; $x++) {
         $prefix .= '-';
     }
@@ -1088,22 +1094,22 @@ function formElementTermsDropdown_helper($elements,$depth = 0)
 		}
     }
     return $r;
-}  
+}
 function formElementTermsDropdown($nodetype = 'clanak',$titleTranslated = '',$formname = 'prikazi_kategoriju')
 {
     global $tax;
     if (!isset($tax))
         die('$tax is not defined in formElementTermsDropdown() function');
-        
+
     $terms = $tax->Get($nodetype,true);
 
     $html = '<div class="control-group">
     <label class="control-label" for="'.$formname.'">'.$titleTranslated.':</label><br />
     <select id="'.$formname.'" name="'.$formname.'">';
-    
+
     $html .= formElementTermsDropdown_helper($terms);
-    
-    
+
+
     $html .= '</select></div>';
     return $html;
 }

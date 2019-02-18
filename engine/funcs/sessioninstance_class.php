@@ -7,6 +7,7 @@ class SessionInstanceClass
     public $id;
     public $isloaded = false;
     public $Game;
+    private $flash = [];//stores flash messages
     /**
      * SessionInstanceClass::__construct()
      * Load or create new session from cookie.
@@ -15,11 +16,11 @@ class SessionInstanceClass
     public function __construct()
     {
         global $db,$config;
-        
+
         $cookiename = $config['session_cookiename'];
         if (isset($_COOKIE[$cookiename]))
         {
-            
+
             //load from cookie
             $data = $this->_loadInstanceDataFromSessionID($_COOKIE[$cookiename]);
             if (!$data)
@@ -54,29 +55,37 @@ class SessionInstanceClass
                 //create new
                 $this->_createSession();
         }
-        
-        
+
+
         if ($this->isloaded)
         {
             $this->Game = new GameObjectClass($this->id);
         }
     }
-    
+
+    public function __destruct()
+    {
+      if(!isset($_SESSION['cshield_flash']))
+        $_SESSION['cshield_flash'] = $this->flash;
+      else
+        $_SESSION['cshield_flash'] = $this->flash;
+    }
+
     public function DeleteCurrentInstance()
     {
         global $db;
         if (!$this->isloaded) return;
-        
+
         $db->delete('instances',
             array(
                 'id[=]' => $this->id
             )
         );
     }
-    
+
     private function _loadInstanceDataFromSessionID($sessionID)
     {
-       
+
         $sessionID = az09($sessionID);
         global $db,$config;
         $r = $db->get('instances','*',
@@ -91,10 +100,10 @@ class SessionInstanceClass
             if (!isset($_COOKIE[$config['session_cookiename']]))
                  setcookie($config['session_cookiename'], $sessionID, time()+COOKIE_EXPIRE, '/',$config['session_cookiedomain']);
         }
-            
+
         return $r;
     }
-    
+
     private function _loadInstanceDataFromInstanceID($id)
     {
         $id = to09($id);
@@ -102,13 +111,13 @@ class SessionInstanceClass
         $r = $db->get('instances','*',
             array('id[=]' => $id)
         );
-        
+
         $this->isloaded = (!$r) ? false:true;
         if ($this->isloaded)
             $this->id = $r['id'];
         return $r;
     }
-    
+
     private function _createSession()
     {
         global $db,$config;
@@ -126,9 +135,31 @@ class SessionInstanceClass
         $this->id = $instanceID;
         setcookie($config['session_cookiename'], $newSessionID, time()+COOKIE_EXPIRE, '/',$config['session_cookiedomain']);
         $_SESSION['cshield_'.$config['session_cookiename']] = $newSessionID;
-       
+
         //load session
         $this->_loadInstanceDataFromInstanceID($this->id);
-        
+
+    }
+
+    public function flash($section,$message)
+    {
+      if (!isset($this->flash[$section]))
+        $this->flash[$section] = [];
+      $this->flash[$section][] = $message;
+    }
+
+    /**
+    * Get flash messages from session.
+    */
+    public function getFlash()
+    {
+      if(isset($_SESSION['cshield_flash']))
+      {
+        $flash = $_SESSION['cshield_flash'];
+        unset($_SESSION['cshield_flash']);
+        return $flash;
+      }
+
+      return [];
     }
 }

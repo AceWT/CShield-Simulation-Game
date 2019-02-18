@@ -1,0 +1,6 @@
+<script type="text/javascript">
+
+<?php if(isset($messages['error'])):foreach($messages['error'] as $err): ?>
+toastr.error('<?php echo $err; ?>')
+<?php endforeach;endif; ?>
+</script>

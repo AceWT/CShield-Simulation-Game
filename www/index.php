@@ -11,7 +11,7 @@ ini_set('display_errors', 1);
 error_reporting(-1);
 
 define("PATHROOT", "../");
-
+define("PATHHDD", "../app/console/game/harddrive/");
 $page = ''; //define
 
 //init all
@@ -23,7 +23,7 @@ require (PATHROOT . "engine/init.php");
 $runApp = $GET_App;
 
 //check if app exists
-if (!is_dir(PATHROOT .'app/'.$runApp)) 
+if (!is_dir(PATHROOT .'app/'.$runApp))
 {
     $runApp = 'console'; //todo run error in console.
     die('INVALID CORE PATH');

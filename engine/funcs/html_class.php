@@ -81,7 +81,7 @@ class HTMLClass
         return ob_get_clean();
       }
 
-      return '[INVALID TEMPLATE PATH: '.$tplPath.']';
+      return '[INVALID TEMPLATE PATH: '.$_tplPath.']';
     }
 
 
