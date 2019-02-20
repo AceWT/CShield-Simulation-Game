@@ -38,6 +38,15 @@ In game context SAINT stands for Sentient Artificial Intelligence N.. T.. AI
 whose integration with system maintain and keep 'hardware' systems safe using
 its various protocols. Think of it as "The Computer" from Star Trek.
 
+## Do you want to contribute?
+
+Create your branch.
+
+What needs to be done?
+* Backstory (sky is the limit)
+* MAINFRAME UI design
+* S.A.I.N.T. scripting
+* Plan to integrate individual player with multiplayer env.
 
 
 
