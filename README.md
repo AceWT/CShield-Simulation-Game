@@ -7,18 +7,18 @@ input indicating catastrophic failure, little information is known at
 this point. Locations, people names and stories in this game are completly
 fictional.
 
-It is important that Player thinks he has stumbled upon secret goverment 
+It is important that Player thinks he has stumbled upon secret government  
 facility remote console and with his or her urge to know more unlocks 
 mainframe graphical interface. And then real game begins.
 
-Afer sucessful booting of mainframe login prompt is displayed to Player.
+After successful booting of mainframe login prompt is displayed to Player.
 To login user needs to decode user information from console by exploring
 commands and opening user login files.
 
 ## Game Backstory
 
-Somewhere there is secrect goverment facility whose purpose was to invent and 
-explore new technologies, biological and tehnical.
+Somewhere there is secret government facility whose purpose was to invent and 
+explore new technologies, biological and technical.
 
 At some point in the past there was breach of some sort, and every person in 
 facility has died. Facility generators has been damaged, backups are still working
