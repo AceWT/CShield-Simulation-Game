@@ -40,7 +40,7 @@ its various protocols. Think of it as "The Computer" from Star Trek.
 
 ## Do you want to contribute?
 
-Create your branch.
+Fork it!
 
 What needs to be done?
 * Backstory (sky is the limit)
