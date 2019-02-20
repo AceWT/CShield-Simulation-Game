@@ -61,7 +61,7 @@ class HTMLClass
     public function El_RenderAlert($title,$bodyHTML = '',$icon = 'lock')
     {
         $r = '<div class="mf-alert">';
-        $r .= '<div class="mf-alert--title"><div class="mf-icon"><i class="fa fa-'.$icon.'"></i></div>'.$title.'</div>';
+        $r .= '<div class="fl mf-alert--titlew"><div class="mf-icon"><i class="fa fa-'.$icon.'"></i></div><div class="mf-alert--title fl-grow">'.$title.'</div></div>';
         $r .= '<div class="mf-alert--body">'.$bodyHTML.'</div>';
         $r .= '</div>';
         echo $r;

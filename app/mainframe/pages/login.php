@@ -1,10 +1,12 @@
 <?php
-
+#wrapper
 $HTML->SetStartPageHTML('<div class="mf mf-login">',false);
-
-
 $HTML->SetEndPageHTML('</div>',false);
+
+$HTML->SetEndPageHTML('<div class="sysinfo">SYSINFO: '.$config['game_corptitle_long'].', '.$config['game_console_version'].' <a href="/">Open console</a></div>');
+#toastr
 $HTML->SetEndPageHTML($HTML->getTpl('toastr',['messages' => $Instance->getFlash()]));
+
 
 if (isset($_POST) && isset($_POST['username']) && isset($_POST['password']))
 {
